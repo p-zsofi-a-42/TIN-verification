@@ -1,0 +1,20 @@
+# Machine specific virtual environment
+myEnv/
+
+# API keys and secrets
+.env
+
+# Private TIN data
+data/private/
+
+# Jupyter checkpoints - auto generated noise
+.ipynb_checkpoints/
+
+# Python cache - auto generated noise
+__pycache__/
+*.pyc
+
+# ChromaDB vector storage - //TODO delete after implementing hashing of documents
+chroma_db/
+vector_storage/
+vector_storage_chroma/

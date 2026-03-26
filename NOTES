@@ -1,0 +1,16 @@
+for nested structures:
+
+regex_row = []
+answer_row = []
+sources_row = []
+
+for col in df.columns:
+	regex_row.append(df[col][0][1])
+	answer_row.append(df[col][0][2])
+	sources_row.append(df[col][0][3])
+
+results_df = pd.DataFrame([regex_row, answer_row, sources_row],
+							columns=df.columns,
+							index=['answer', 'source', 'reasoning']
+)
+print(results_df)
