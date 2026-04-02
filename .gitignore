@@ -1,3 +1,6 @@
+# VsCode settings
+.vscode/
+
 # Machine specific virtual environment
 myEnv/
 
