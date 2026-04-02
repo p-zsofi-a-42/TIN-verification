@@ -1,0 +1,8 @@
+pip3 install --upgrade --quiet  langchain langchain-community	# core and extra packages
+pip3 install --upgrade --quiet  langchain-google-genai			# Gemini lanfchain models
+pip3 install --upgrade --quiet  langchain-text-splitters
+pip3 install --upgrade --quiet  langchain-classic				# load_evaluator
+pip3 install --upgrade --quiet  chromadb						# vector database to look up the question embedding and the stored chinks embeddings
+pip3 install --upgrade --quiet  langchain-chroma				
+pip3 install --upgrade --quiet  pypdf pandas streamlit
+pip3 install --upgrade --quiet  python-dotenv					# load_dotenv; reading env file

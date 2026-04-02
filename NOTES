@@ -14,3 +14,17 @@ results_df = pd.DataFrame([regex_row, answer_row, sources_row],
 							index=['answer', 'source', 'reasoning']
 )
 print(results_df)
+
+"""
+converting juyper to py
+
+jupyter nbconvert --to script your_notebook.ipynb --no-prompt
+
+--no-prompt — removes the # In[1]: cell markers
+--output — specify a different output filename
+--to html      # renders notebook as a webpage
+--to pdf       # exports as PDF
+--to markdown  # converts to .md file
+-- to script   #converts to a plain .py file.
+
+ """
