@@ -15,6 +15,46 @@ results_df = pd.DataFrame([regex_row, answer_row, sources_row],
 )
 print(results_df)
 
+
+#------------------------------------------------------------------------------
+	df = pd.DataFrame([final_answer.model_dump()])
+
+#same as
+	df = pd.DataFrame({
+	    "answer": [final_answer.answer],
+	    "sources": [final_answer.sources],
+	    "regex": [final_answer.regex]
+	})
+#------------------------------------------------------------------------------
+
+retriever = vector_storage.as_retriever(search_type="similarity") 	#uses cos(distance) to determine similarity
+	# similarity:	Finds the chunks whose vectors are closest to the query vector. Pure distance measurement.
+	# mmr: 			Maximum Marginal Relevance: If two chunks are very similar to each other, it picks one and skips the other in favour of something slightly less relevant but more different.
+	#				Useful when your PDF has repetitive content 
+	# similarity_score_threshold: Same as similarity but lets you set a minimum score — chunks below that threshold get rejected entirely even if they're the closest available.
+	#				Useful when you'd rather return nothing than return something irrelevant.
+	# extra parameter:  how many chunks get returned:
+	# search_kwargs={"k": 5}  # default is 4
+
+#------------------------------------------------------------------------------
+
+from langchain_core.runnables import RunnablePassthrough
+	# plumbing - connects steps of your pipeline together
+
+def processing_new_document(filepath): #TODO move reused funcs outside
+	chunks = chunk_from_file(filepath)
+	retriever = create_retriever(chunks)
+	answer = ask_llm_w_context("What is the TIN structure for this country?", retriever)
+
+	#same but with rag_chain approach
+	rag_chain = (
+				{"context": retriever | format_docs, "question":RunnablePassthrough()}
+				| prompt_template
+				| llm.with_structured_output(structuredAnswer, strict=True)
+	)
+	answer = rag_chain.invoke("How are the TINs structured for this country?")
+#------------------------------------------------------------------------------
+
 """
 converting juyper to py
 
