@@ -6,20 +6,15 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:01:51 by zpalotas          #+#    #+#              #
-#    Updated: 2026/04/05 23:37:24 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/04/10 01:03:53 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #!/usr/bin/env python
 # coding: utf-8
 
-# IMPORT LANGCHAIN MODULES
-
-
-# OTHER PACKAGES
 import os
 	# interact with your operating system (e.g. read env variables)
-
 import hashlib
 	# Python's built in hashing library
 import json
@@ -31,9 +26,6 @@ from IPython.display import display
 
 # MY FUNCTIONS
 from processing_files	import processing_new_document
-
-
-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading the documents
@@ -63,9 +55,9 @@ def get_file_hash(filepath):							# opens in read binary mode (raw bytes instea
 		return readable_hash_object
 
 # ```
-# opening the file
-# reading it's bytes and producing a hash 
-# retrieving the hash if it was in the list
+# Checks if the file has been processed already
+# searches the json file
+# returns the stored or (if not found) newly created hash 
 # ```
 def is_already_processed(filepath, hash_store):
 	if os.path.exists(hash_store):					# check if my json file exist
@@ -79,7 +71,7 @@ def is_already_processed(filepath, hash_store):
 	return file_hash in processed.values(), file_hash, processed # processed.values(): True/False, has it been seen before
 
 # ```
-# saving the new hash, rewriting or creating entry
+# Saving the new hash, rewriting or creating entry
 # ```
 def mark_as_processed(filepath, file_hash, processed, hash_store):
 	processed[filepath] = file_hash				# rewrites or adds new entry: filename is key, hash is value
@@ -88,7 +80,8 @@ def mark_as_processed(filepath, file_hash, processed, hash_store):
 
 
 # ```
-# checking if the file wais already proccessed or not
+# Checking if the file was already proccessed or not
+# Run processing (and calling LLM) only if the file is new 
 # ```
 is_already_done, file_hash, processed = is_already_processed(filepath, hash_store)
 

@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:07:43 by zpalotas          #+#    #+#              #
-#    Updated: 2026/04/05 23:37:49 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/04/09 16:08:21 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,17 +24,22 @@ from dotenv import load_dotenv
 # Setting up the LLM
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # ```
-# reading env file
-# Using Gemini's free version
+# Reading env file
 # ```
 load_dotenv()
 API_KEY = os.environ.get("GEMINI_API_KEY")
 
+# ```
+# Using Gemini's free version
+# ```
 llm = ChatGoogleGenerativeAI(
 		model="gemini-2.5-flash-lite",
 		google_api_key=API_KEY
 		)
-	
+
+# ```
+# Init Gemini embedding function
+# ```
 get_embedding = GoogleGenerativeAIEmbeddings(
 			model="gemini-embedding-001", google_api_key=API_KEY
 		)
