@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 19:58:55 by zpalotas          #+#    #+#              #
-#    Updated: 2026/04/10 01:06:38 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/01 20:07:25 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -127,7 +127,6 @@ def create_vector_storage(chunks, embedding_function, storage_path):
 										ids = list(unique_ids),
 										embedding = embedding_function,
 										persist_directory = storage_path)
-	vector_storage.persist() #does it automatically
 	return vector_storage
 
 def create_retriever(chunks):

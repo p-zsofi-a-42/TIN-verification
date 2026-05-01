@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:01:51 by zpalotas          #+#    #+#              #
-#    Updated: 2026/04/10 01:03:53 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/01 20:08:31 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,16 +26,6 @@ from IPython.display import display
 
 # MY FUNCTIONS
 from processing_files	import processing_new_document
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Loading the documents
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# ```
-# placeholder until we incorporate more than one
-# ```
-#filepath = "data/TIN_description_pdfs/austria-tin.pdf"
-#filepath = "data/TIN_description_pdfs/brunei-darussalam-tin.pdf"
-filepath = "data/TIN_description_pdfs/china-tin.pdf"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Checking hash of the documents
@@ -78,18 +68,25 @@ def mark_as_processed(filepath, file_hash, processed, hash_store):
 	with open(hash_store, "w") as store_file:	# open to write
 		json.dump(processed, store_file)		# convert back to json. the reverse of json.load
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Loading the documents
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+pdf_directory = os.fsdecode("data/TIN_description_pdfs/")
+for file in os.listdir(pdf_directory):
+	filepath = pdf_directory + file
+	basename = os.path.basename(filepath)
+	# ```
+	# Checking if the file was already proccessed or not
+	# Run processing (and calling LLM) only if the file is new 
+	# ```
+	print("Processing: ", basename)
+	is_already_done, file_hash, processed = is_already_processed(filepath, hash_store)
 
-# ```
-# Checking if the file was already proccessed or not
-# Run processing (and calling LLM) only if the file is new 
-# ```
-is_already_done, file_hash, processed = is_already_processed(filepath, hash_store)
-
-if is_already_done:
-	print("Already processed, loading from storage")
-	print(file_hash)
-else:
-	print("New document, processing...")
-	processing_new_document(filepath)
-	mark_as_processed(filepath, file_hash, processed, hash_store)
-	print("New document, processed...")
+	if is_already_done:
+		print("✅ Already processed, loading from storage")
+		print(file_hash)
+	else:
+		print("New document, processing...")
+		processing_new_document(filepath)
+		mark_as_processed(filepath, file_hash, processed, hash_store)
+		print("✅ Processing done")
