@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 19:58:55 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/01 20:07:25 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/01 23:04:22 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,7 @@ class structuredAnswer(BaseModel):
 		answer: str = Field(description="Concise answer to the question")
 		sources: str = Field(description="Full direct text chunk from the context used to answer the question")
 		regex: str = Field(description="Create a regex that will be processed and compared to real life TINs, and need to be reliably determined if the TIN fufills the regex")
+		country: str = Field(description="What is the country name?")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Text chunks
@@ -149,8 +150,8 @@ def ask_llm_w_context(question, retriever):
 	relevant_chunks = retriever.invoke(question)
 	promt = prompt_template.format(context=format_docs(relevant_chunks),
 								question=question)
-	llm.with_structured_output(structuredAnswer, strict=True)
-	answer = llm.invoke(promt)
+	with_structured = llm.with_structured_output(structuredAnswer, strict=True)
+	answer = with_structured.invoke(promt)
 	return answer
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,5 +161,8 @@ def processing_new_document(filepath):
 	chunks = chunk_from_file(filepath)
 	retriever = create_retriever(chunks)
 	answer = ask_llm_w_context("What is the TIN structure for this country?", retriever)
-	df = pd.DataFrame([answer.model_dump()]) # data frame has all columns that the StructuredAnswer class has with corresponding headers
-	display(df)
+	return answer
+#	df = pd.DataFrame([answer.model_dump()]) # data frame has all columns that the StructuredAnswer class has with corresponding headers
+#	display(df)
+#	print(df.shape)
+#	return df
