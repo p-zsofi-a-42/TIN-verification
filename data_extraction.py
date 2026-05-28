@@ -6,11 +6,11 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:01:51 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/01 23:10:42 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/28 11:22:33 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 import os
@@ -37,18 +37,18 @@ else:
 	regex_storage = {}
 
 def add_or_overwrite(new_data: structuredAnswer):
-	print("helo")
-	print(type(new_data))
-	print(new_data)
+	print("helo")			# TODO delete
+	print(type(new_data))	# TODO delete
+	print(new_data)			# TODO delete
 #	answer = new_data.model_dump()
 	country = new_data.country
 	regex_storage[country] = new_data.model_dump()
 	with open(regex_filepath, "w") as file:	# open to write
-		json.dump(regex_storage, file, indent=2)
+		json.dump(regex_storage, file, indent=4, sort_keys=True)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading the documents
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-hash_store = "processed_files.json"
+hash_store = "./processed_files.json"
 pdf_directory = os.fsdecode("data/TIN_description_pdfs/")
 for file in os.listdir(pdf_directory):
 	filepath = pdf_directory + file

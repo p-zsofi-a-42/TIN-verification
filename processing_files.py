@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 19:58:55 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/01 23:04:22 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/28 11:03:39 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ class structuredAnswer(BaseModel):
 		answer: str = Field(description="Concise answer to the question")
 		sources: str = Field(description="Full direct text chunk from the context used to answer the question")
 		regex: str = Field(description="Create a regex that will be processed and compared to real life TINs, and need to be reliably determined if the TIN fufills the regex")
-		country: str = Field(description="What is the country name?")
+		country: str #= Field(description="What is the country name?")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Text chunks
