@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:01:51 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/31 17:10:50 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/31 19:52:19 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,9 @@ else:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 hash_store = "./processed_files.json"
 pdf_directory = os.fsdecode("data/TIN_description_pdfs/")
+test_mode = input("Do you want to reprocess all documents? (yes/no) ").strip().lower() \
+			== "yes"
+
 for file in os.listdir(pdf_directory):
 	filepath = pdf_directory + file
 	basename = os.path.basename(filepath)
@@ -54,15 +57,15 @@ for file in os.listdir(pdf_directory):
 	print("Processing: ", basename)
 	is_already_processed, file_hash, processed_documents = check_process_status(filepath, hash_store)
 
-	if is_already_processed:
+	if is_already_processed and not test_mode:
 		print("✅ Already processed, loading from storage")
 		print(file_hash)
 	else:
 		print("New document, processing...")
 		new_data = processing_new_document(filepath)
 		mark_as_processed(filepath, file_hash, processed_documents, hash_store)
-		print("✅ Processing done")
 		add_or_overwrite(new_data, regex_storage, regex_filepath)
+		print("✅ Processing done")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Reading the customer data file
