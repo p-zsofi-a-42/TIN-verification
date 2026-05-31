@@ -99,7 +99,7 @@ def chunk_from_file(filepath):
 # Processing all the pages and creating a unique identifier for each chunk
 # Creating vectors (quantified semantic meaning) with the llm embedding function
 # ```
-def create_vector_storage(chunks, embedding_function, storage_path):
+def create_vector_storage(chunks, embedding_function):
 	# Making sure there are no duplicates
 	# Create a list of unique ids for each document based on the content
 	ids = []
@@ -126,17 +126,12 @@ def create_vector_storage(chunks, embedding_function, storage_path):
 	# Creating the chroma database
 	vector_storage = Chroma.from_documents(documents = unique_chunks,
 										ids = list(unique_ids),
-										embedding = embedding_function,
-										persist_directory = storage_path)
+										embedding = embedding_function)
 	return vector_storage
 
 def create_retriever(chunks):
 	vector_storage = create_vector_storage(chunks=chunks,
-									embedding_function=get_embedding,
-									storage_path="vector_storage_chroma")
-	# Load stored vector_storage
-	vector_storage = Chroma(persist_directory="vector_storage_chroma", embedding_function=get_embedding)
-
+									embedding_function=get_embedding)
 	retriever = vector_storage.as_retriever(search_type="similarity") 	#uses cos(distance) to determine similarity
 	return retriever
 
