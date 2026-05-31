@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:01:51 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/31 16:57:23 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/31 17:10:50 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,8 @@ from IPython.display import display
 	# dosplays tables in a nice way
 import json
 	# reads and writes JSON files (key-value storage)
+import pandas as pd
+	# spreadsheet-like data manipulation
 
 # MY FUNCTIONS
 from processing_files	import processing_new_document, structuredAnswer, add_or_overwrite
@@ -63,20 +65,24 @@ for file in os.listdir(pdf_directory):
 		add_or_overwrite(new_data, regex_storage, regex_filepath)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Reading the customer data file
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+customer_data_file = "./data/TIN_database/example.csv"
+customer_data_df = pd.read_csv(customer_data_file, sep=';')
+customer_TINs = {} #empty dictionary
+
+for index, row in customer_data_df.iterrows():
+	country = row["Country"]
+	tin = row["TIN"]
+	customer_TINs.update({country : tin})
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Validating TIN
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-TIN_input = input("\nEnter a TIN: ")
-
-country_match = find_matching_country(TIN_input, regex_storage)
-if (country_match):
-	print("The TIN : [", TIN_input, "] can be from: ", country_match)
-else:
-	print("The TIN : [", TIN_input, "] has no match")
-
-
-TIN_input = input("\nEnter a TIN: ")
-country_match = find_matching_country(TIN_input, regex_storage)
-if (country_match):
-	print("The TIN : [", TIN_input, "] can be from: ", country_match)
-else:
-	print("The TIN : [", TIN_input, "] has no match")
+for customer_country, customer_tin in customer_TINs.items():
+	TIN_input = customer_tin
+	country_match = find_matching_country(TIN_input, regex_storage)
+	if (country_match):
+		print("The TIN : [", TIN_input, "] can be from: ", country_match)
+	else:
+		print("The TIN : [", TIN_input, "] has no match")

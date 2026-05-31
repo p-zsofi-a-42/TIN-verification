@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 19:58:55 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/31 13:49:42 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/31 16:47:10 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,6 @@ from langchain_chroma import Chroma
 # OTHER PACKAGES
 import uuid
 	# generate unique random IDs
-import pandas as pd
-	# spreadsheet-like data manipulation
 from IPython.display import display
 	# dosplays tables in a nice way
 import json

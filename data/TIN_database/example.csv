@@ -1,6 +1,5 @@
-Name;Country;Country_code;TIN;if_invalid
-Max Mustermann;Germany;DE;;
-John Doe;United Kingdom;UK;;
-Maria Musterfrau;Austria;AT;;
-Maija Meikäläinen ;Finland;FI;;
-Teszt Elek;Hungary;HU;;
+ï»¿Name;Country;Country_code;TIN;if_invalid
+Max Mustermann;Germany;DE;123456789;
+Maria Musterfrau;Austria;AT;12-345/6789;
+Test Tester;Brunei;BN;29-999999;
+Some Body;China;CN;C99999999999999999;
