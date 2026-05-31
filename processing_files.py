@@ -157,18 +157,11 @@ def processing_new_document(filepath):
 	retriever = create_retriever(chunks)
 	answer = ask_llm_w_context("What is the TIN structure for this country?", retriever)
 	return answer
-#	df = pd.DataFrame([answer.model_dump()]) # data frame has all columns that the StructuredAnswer class has with corresponding headers
-#	display(df)
-#	print(df.shape)
-#	return df
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Adding new data to the storage
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def add_or_overwrite(new_data: structuredAnswer, regex_storage, regex_filepath):
-#	print("---------add_or_overwrite-----------")			# TODO delete
-#	print(type(new_data))	# TODO delete
-#	print(new_data)			# TODO delete
 	country = new_data.country
 	regex_storage[country] = new_data.model_dump()
 	with open(regex_filepath, "w") as file:	# open to write
