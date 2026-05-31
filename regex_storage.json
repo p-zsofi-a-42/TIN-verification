@@ -1,26 +1,30 @@
 {
-    "Brunei Darussalam": {
-        "answer": "The TIN structure for entities in the new regime consists of 18 characters, and in the old regime it consists of 15 characters. For individuals using a Chinese ID card, the TIN is their 18-character ID number. For individuals using a passport or other ID certificate, the TIN format is 99-999/9999, where the hyphen and slash are not mandatory.",
-        "country": "Brunei Darussalam",
-        "regex": "^(\\d{2}-\\d{3}/\\d{4}|\\d{9})$",
-        "sources": "Section II \u2013 TIN Structure \n \n The structure of TIN varies depending on the types of taxpayer. \n For entities, it consists of 15 characters (old TIN regime) or 18 characters (new TIN regime). \n For an individual using Chinese ID card as its identification, TIN is its ID number which consists of \n 18 characters. For an individual using passport or other ID certificate as its identification, TIN is \n assigned in the following format. In some areas, passport numbers are also recognized as TIN for\n\n\n\n\nFormat Explanation Comment \n99-999/9999 9 digits The hyphen and the slash are \nnot mandatory in all cases (eg \nfor the purpose of IT \nprocessing they should be \nomitted) \n \n \nSection III \u2013 Where to find TINs?"
+    "AUSTRIA": {
+        "answer": "The Austrian TIN consists of 9 digits. The format can be represented as 99-999/9999, but the hyphens and slash are not mandatory for all purposes, such as IT processing.",
+        "country": "AUSTRIA",
+        "regex": [
+            "\\d{9}",
+            "\\d{2}-\\d{3}/\\d{4}"
+        ],
+        "sources": "Format Explanation Comment \n99-999/9999 9 digits The hyphen and the slash are \nnot mandatory in all cases (eg \nfor the purpose of IT \nprocessing they should be \nomitted)"
     },
-    "I am uncertain": {
-        "answer": "The TIN structure for entities consists of 15 characters (old TIN regime) or 18 characters (new TIN regime). For individuals using a Chinese ID card, the TIN is their 18-character ID number. For individuals using a passport or other ID certificate, the TIN format is not explicitly detailed but may be assigned in a specific format. A general format for TINs is also mentioned as 99-999/9999, where the hyphen and slash are not always mandatory.",
-        "country": "I am uncertain",
-        "regex": "^(\\d{2}-\\d{3}/\\d{4}|\\d{9})$",
-        "sources": "Section II \u2013 TIN Structure \n\n\nThe structure of TIN varies depending on the types of taxpayer. \nFor entities, it consists of 15 characters (old TIN regime) or 18 characters (new TIN regime). \nFor an individual using Chinese ID card as its identification, TIN is its ID number which consists of \n18 characters. For an individual using passport or other ID certificate as its identification, TIN is \nassigned in the following format. In some areas, passport numbers are also recognized as TIN for\n\n\n\nSection II \u2013 TIN Structure \n\n\nFormat Explanation Comment \n99-999/9999 9 digits The hyphen and the slash are \nnot mandatory in all cases (eg \nfor the purpose of IT \nprocessing they should be \nomitted) \n\n\n Section III \u2013 Where to find TINs?"
+        "china": {
+        "answer": "The chinan TIN consists of 9 digits. The format can be represented as 99-999/9999, but the hyphens and slash are not mandatory for all purposes, such as IT processing.",
+        "country": "china",
+        "regex": [
+            "(\\d{15}$)",
+            "(\\d{18}$)",
+            "(\\d{17}[Xx]$)",
+            "(\\d{8}[A-Za-z0-9]{2}\\d{2}[A-Za-z0-9]\\d{4}[A-Za-z0-9]$)"
+        ],
+        "sources": "Format Explanation Comment \n99-999/9999 9 digits The hyphen and the slash are \nnot mandatory in all cases (eg \nfor the purpose of IT \nprocessing they should be \nomitted)"
     },
-    "Unknown": {
-        "answer": "The TIN structure for entities consists of 15 characters (old TIN regime) or 18 characters (new TIN regime). For individuals using a Chinese ID card, the TIN is their 18-character ID number. For individuals using a passport or other ID certificate, the TIN format is assigned, and in some areas, passport numbers are recognized as TINs. A specific format mentioned is 99-999/9999, comprising 9 digits, where hyphens and slashes are not always mandatory.",
-        "country": "Unknown",
-        "regex": "^(\\d{15}|\\d{18}|\\d{9}|\\d{2}-\\d{3}/\\d{4})$",
-        "sources": "Section II \u2013 TIN Structure \n \nThe structure of TIN varies depending on the types of taxpayer. \nFor entities, it consists of 15 characters (old TIN regime) or 18 characters (new TIN regime). \nFor an individual using Chinese ID card as its identification, TIN is its ID number which consists of \n18 characters. For an individual using passport or other ID certificate as its identification, TIN is \nassigned in the following format. In some areas, passport numbers are also recognized as TIN for\n\n\nFormat Explanation Comment \n99-999/9999 9 digits The hyphen and the slash are \nnot mandatory in all cases (eg \nfor the purpose of IT \nprocessing they should be \nomitted) \n \n \nSection III \u2013 Where to find TINs?"
-    },
-    "Germany": {
-        "answer": "test",
-        "country": "Germany",
-        "regex": "^(\\d{9})$",
-        "sources": ""
+        "brunei": {
+        "answer": "The brunein TIN consists of 9 digits. The format can be represented as 99-999/9999, but the hyphens and slash are not mandatory for all purposes, such as IT processing.",
+        "country": "brunei",
+        "regex": [
+            "((00-0[0-7]\\d{4}|00-080000)$)"
+        ],
+        "sources": "Format Explanation Comment \n99-999/9999 9 digits The hyphen and the slash are \nnot mandatory in all cases (eg \nfor the purpose of IT \nprocessing they should be \nomitted)"
     }
 }

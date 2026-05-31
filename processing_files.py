@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 19:58:55 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/31 16:47:10 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/31 20:03:42 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,14 +45,19 @@ from llm_config			import llm, get_embedding
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Prompt instructions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-PROMPT_TEMPLATE = """
+PROMPT_TEMPLATE = r"""
 Use the following pieces of retieved information only to answer the question
 If you don't know the answer, say "I don't know", Don't make up anything.
-If there is ambiguity, say "I am uncertain"API_KEY
 
 {context}
 
 Answer based on the above context: {question}
+
+Return regex patterns as valid Python regex strings.
+Example: 9 digits only -> ["^\\d{{9}}$"]
+Example: starts with T followed by 8 digits -> ["^T\\d{{8}}$"]
+Do not use [A-Z] unless any letter is explicitly valid.
+Verify each pattern mentally against the document rules before returning.
 """
 prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 
@@ -61,10 +66,10 @@ prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # pydantic is a data validation lib for python. to specify the stucture of the answer
 class structuredAnswer(BaseModel):
-		answer: str = Field(description="Concise answer to the question")
+		answer: str = Field(description="TIN structure answer in a very plain format, just describe the rules shortly, no narrative text")
 		sources: str = Field(description="Full direct text chunk from the context used to answer the question")
 		regex: list[str] = Field(description="List of valid Python regex patterns. Each pattern must use proper regex syntax with anchors (^ and $), escaped special chars (\\d not d), and must match the exact TIN format described in the document. One pattern per TIN variation.")
-		country: str = Field(description="What is the country name? Reply with only the country name, nothing else.")
+		country: str = Field(description="What is the country name? Reply with only the country name, nothing else. Capitalize only the first letters")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Text chunks
