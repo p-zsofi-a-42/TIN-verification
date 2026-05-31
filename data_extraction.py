@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:01:51 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/31 13:53:02 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/31 13:53:14 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ for file in os.listdir(pdf_directory):
 	print("Processing: ", basename)
 	is_already_processed, file_hash, processed_documents = check_process_status(filepath, hash_store)
 
-	if not is_already_processed:
+	if is_already_processed:
 		print("✅ Already processed, loading from storage")
 		print(file_hash)
 	else:
