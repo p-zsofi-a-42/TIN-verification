@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:01:51 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/31 13:53:14 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/31 16:57:23 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ import json
 # MY FUNCTIONS
 from processing_files	import processing_new_document, structuredAnswer, add_or_overwrite
 from check_file_update	import check_process_status, mark_as_processed
+from regex				import find_matching_country
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading processed docs regexes
@@ -66,11 +67,16 @@ for file in os.listdir(pdf_directory):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TIN_input = input("\nEnter a TIN: ")
 
-import re
+country_match = find_matching_country(TIN_input, regex_storage)
+if (country_match):
+	print("The TIN : [", TIN_input, "] can be from: ", country_match)
+else:
+	print("The TIN : [", TIN_input, "] has no match")
 
-def find_matching_country(tin, df):
-    for index, row in df.iterrows():
-        pattern = row["regex"]
-        if re.match(pattern, tin):
-            return row["answer"]  # or whatever column has the country name
-    return "No match found"
+
+TIN_input = input("\nEnter a TIN: ")
+country_match = find_matching_country(TIN_input, regex_storage)
+if (country_match):
+	print("The TIN : [", TIN_input, "] can be from: ", country_match)
+else:
+	print("The TIN : [", TIN_input, "] has no match")
