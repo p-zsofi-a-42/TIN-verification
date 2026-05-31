@@ -63,8 +63,8 @@ prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
 class structuredAnswer(BaseModel):
 		answer: str = Field(description="Concise answer to the question")
 		sources: str = Field(description="Full direct text chunk from the context used to answer the question")
-		regex: str = Field(description="Create a regex that will be processed and compared to real life TINs, and need to be reliably determined if the TIN fufills the regex")
-		country: str #= Field(description="What is the country name?")
+		regex: list[str] = Field(description="List of valid Python regex patterns. Each pattern must use proper regex syntax with anchors (^ and $), escaped special chars (\\d not d), and must match the exact TIN format described in the document. One pattern per TIN variation.")
+		country: str = Field(description="What is the country name? Reply with only the country name, nothing else.")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Text chunks
@@ -155,7 +155,7 @@ def ask_llm_w_context(question, retriever):
 def processing_new_document(filepath):
 	chunks = chunk_from_file(filepath)
 	retriever = create_retriever(chunks)
-	answer = ask_llm_w_context("What is the TIN structure for this country?", retriever)
+	answer = ask_llm_w_context("What is the TIN structure for this country? Identify the country name also", retriever)
 	return answer
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
