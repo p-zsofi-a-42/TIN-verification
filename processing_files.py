@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 19:58:55 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/28 11:03:39 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/31 13:49:42 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,8 @@ import pandas as pd
 	# spreadsheet-like data manipulation
 from IPython.display import display
 	# dosplays tables in a nice way
+import json
+	# reads and writes JSON files (key-value storage)
 
 # MY FUNCTIONS
 from llm_config			import llm, get_embedding
@@ -166,3 +168,15 @@ def processing_new_document(filepath):
 #	display(df)
 #	print(df.shape)
 #	return df
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Adding new data to the storage
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def add_or_overwrite(new_data: structuredAnswer, regex_storage, regex_filepath):
+#	print("---------add_or_overwrite-----------")			# TODO delete
+#	print(type(new_data))	# TODO delete
+#	print(new_data)			# TODO delete
+	country = new_data.country
+	regex_storage[country] = new_data.model_dump()
+	with open(regex_filepath, "w") as file:	# open to write
+		json.dump(regex_storage, file, indent=4, sort_keys=True)

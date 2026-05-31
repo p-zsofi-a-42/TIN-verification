@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 20:01:51 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/28 11:22:33 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/05/31 13:53:02 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,8 +23,8 @@ import json
 	# reads and writes JSON files (key-value storage)
 
 # MY FUNCTIONS
-from processing_files	import processing_new_document, structuredAnswer
-from check_file_update	import is_already_processed, mark_as_processed
+from processing_files	import processing_new_document, structuredAnswer, add_or_overwrite
+from check_file_update	import check_process_status, mark_as_processed
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading processed docs regexes
@@ -36,15 +36,6 @@ if os.path.exists(regex_filepath):
 else:
 	regex_storage = {}
 
-def add_or_overwrite(new_data: structuredAnswer):
-	print("helo")			# TODO delete
-	print(type(new_data))	# TODO delete
-	print(new_data)			# TODO delete
-#	answer = new_data.model_dump()
-	country = new_data.country
-	regex_storage[country] = new_data.model_dump()
-	with open(regex_filepath, "w") as file:	# open to write
-		json.dump(regex_storage, file, indent=4, sort_keys=True)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Loading the documents
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,17 +49,17 @@ for file in os.listdir(pdf_directory):
 	# Run processing (and calling LLM) only if the file is new 
 	# ```
 	print("Processing: ", basename)
-	is_already_done, file_hash, processed = is_already_processed(filepath, hash_store)
+	is_already_processed, file_hash, processed_documents = check_process_status(filepath, hash_store)
 
-	if not is_already_done:
+	if not is_already_processed:
 		print("✅ Already processed, loading from storage")
 		print(file_hash)
 	else:
 		print("New document, processing...")
 		new_data = processing_new_document(filepath)
-		mark_as_processed(filepath, file_hash, processed, hash_store)
+		mark_as_processed(filepath, file_hash, processed_documents, hash_store)
 		print("✅ Processing done")
-		add_or_overwrite(new_data)
+		add_or_overwrite(new_data, regex_storage, regex_filepath)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Validating TIN
