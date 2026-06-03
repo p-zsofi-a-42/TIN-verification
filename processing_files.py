@@ -6,7 +6,7 @@
 #    By: zpalotas <zpalotas@42vienna.at>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/05 19:58:55 by zpalotas          #+#    #+#              #
-#    Updated: 2026/05/31 20:03:42 by zpalotas         ###   ########.fr        #
+#    Updated: 2026/06/03 12:30:40 by zpalotas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ from IPython.display import display
 	# dosplays tables in a nice way
 import json
 	# reads and writes JSON files (key-value storage)
+import os
 
 # MY FUNCTIONS
 from llm_config			import llm, get_embedding
@@ -104,7 +105,8 @@ def chunk_from_file(filepath):
 # Processing all the pages and creating a unique identifier for each chunk
 # Creating vectors (quantified semantic meaning) with the llm embedding function
 # ```
-def create_vector_storage(chunks, embedding_function):
+def create_vector_storage(chunks, embedding_function, collection_name):
+	print("----------EMBEDDINGS API call-------------")
 	# Making sure there are no duplicates
 	# Create a list of unique ids for each document based on the content
 	ids = []
@@ -131,12 +133,22 @@ def create_vector_storage(chunks, embedding_function):
 	# Creating the chroma database
 	vector_storage = Chroma.from_documents(documents = unique_chunks,
 										ids = list(unique_ids),
-										embedding = embedding_function)
+										embedding = embedding_function,
+										persist_directory="./chroma_db",
+										collection_name=collection_name)
 	return vector_storage
 
-def create_retriever(chunks):
-	vector_storage = create_vector_storage(chunks=chunks,
-									embedding_function=get_embedding)
+def create_retriever(chunks, filepath, is_test_mode):
+	collection_name = os.path.basename(filepath).replace(".pdf", "").replace(" ", "_") # all of the documents will get their own persisting database
+	if is_test_mode:
+		vector_storage = Chroma(
+						embedding_function=get_embedding,
+						persist_directory="./chroma_db",
+						collection_name=collection_name)
+	else:
+		vector_storage = create_vector_storage(chunks=chunks,
+											embedding_function=get_embedding,
+											collection_name=collection_name)
 	retriever = vector_storage.as_retriever(search_type="similarity") 	#uses cos(distance) to determine similarity
 	return retriever
 
@@ -157,9 +169,9 @@ def ask_llm_w_context(question, retriever):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Processing the new documents
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-def processing_new_document(filepath):
+def processing_new_document(filepath, is_test_mode):
 	chunks = chunk_from_file(filepath)
-	retriever = create_retriever(chunks)
+	retriever = create_retriever(chunks, filepath, is_test_mode)
 	answer = ask_llm_w_context("What is the TIN structure for this country? Identify the country name also", retriever)
 	return answer
 
